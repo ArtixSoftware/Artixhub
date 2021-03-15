@@ -229,8 +229,10 @@ function ESPAttachToPlayer(APlayer)
                     local Pass = true
                     local APlayerVisCheck = VisibleCheck(APlayer)
                     if HUB.Visuals.Player.DistanceCheck then
-                        if Player and Player.Character and Player.Character.PrimaryPart and APlayer and APlayer.Character and APlayer.Character.PrimaryPart and (Player.Character.PrimaryPart.Position - APlayer.Character.PrimaryPart.Position).Magnitude < HUB.Visuals.Player.DistanceAllowed then else
-                            Pass = false
+                        if Player and Player.Character and Player.Character.PrimaryPart and APlayer and APlayer.Character and APlayer.Character.PrimaryPart then
+                            if (Player.Character.PrimaryPart.Position - APlayer.Character.PrimaryPart.Position).Magnitude < HUB.Visuals.Player.DistanceAllowed then else
+                                Pass = false
+                            end
                         end
                     end
                     if HUB.Visuals.Player.VisibleCheck then
