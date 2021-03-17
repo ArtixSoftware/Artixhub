@@ -1247,7 +1247,7 @@ VisualsPage.Toggle({
             for _,v in next, Workspace.SpawnerZones.Plants:GetChildren() do
                 for _,v2 in next, v:GetChildren() do
                     if v2.PrimaryPart then
-                        if v2.Name == "Nettle" then
+                        if v2.Name == "Cactus1" or v2.Name == "Cactus2" or v2.Name == "Cactus3" then
                             ESPAttachToObject(v2.PrimaryPart, {"Visuals", "Plants", "Cactus"})
                         end
                     end
@@ -1265,7 +1265,7 @@ VisualsPage.Toggle({
             for _,v in next, Workspace.SpawnerZones.Plants:GetChildren() do
                 for _,v2 in next, v:GetChildren() do
                     if v2.PrimaryPart then
-                        if v2.Name == "Nettle" then
+                        if v2.Name == "Opuntia1" or v2.Name == "Opuntia2" then
                             ESPAttachToObject(v2.PrimaryPart, {"Visuals", "Plants", "CactusFleshPlant"})
                         end
                     end
@@ -1283,7 +1283,7 @@ VisualsPage.Toggle({
             for _,v in next, Workspace.SpawnerZones.Plants:GetChildren() do
                 for _,v2 in next, v:GetChildren() do
                     if v2.PrimaryPart then
-                        if v2.Name == "Nettle" then
+                        if v2.Name == "Mushrooms" then
                             ESPAttachToObject(v2.PrimaryPart, {"Visuals", "Plants", "Mushrooms"})
                         end
                     end
@@ -1301,7 +1301,7 @@ VisualsPage.Toggle({
             for _,v in next, Workspace.SpawnerZones.Plants:GetChildren() do
                 for _,v2 in next, v:GetChildren() do
                     if v2.PrimaryPart then
-                        if v2.Name == "Nettle" then
+                        if v2.Name == "AloeVera" then
                             ESPAttachToObject(v2.PrimaryPart, {"Visuals", "Plants", "AloeVera"})
                         end
                     end
