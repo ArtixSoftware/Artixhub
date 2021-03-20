@@ -60,11 +60,13 @@ local HUB = {
     Aim = {
         SilentAim = false,
         Aimbot = false,
-        Sensitivity = 8,
+        Sensitivity = 3,
         VisCheck = true,
         FOV = false,
         FOVCircleColor = Color3.fromRGB(0,0,0),
         FOVSize = 70,
+        AimbotMethod = "SYNX",
+        Zoom = false,
     },
     Game = {
         Autofarm = false,
@@ -133,7 +135,11 @@ game:GetService("Lighting").Changed:Connect(function()
 end)
 
 Camera:GetPropertyChangedSignal("FieldOfView"):Connect(function()
-    Camera.FieldOfView = HUB.Player.CustomFOV
+    if HUB.Aim.Zoom then
+        Camera.FieldOfView = 20
+    else
+        Camera.FieldOfView = HUB.Player.CustomFOV
+    end
 end)
 
 function ValidateDrawnObjects()
@@ -570,12 +576,24 @@ RunService.Heartbeat:Connect(function()
 end)
 
 UserInputService.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.Keyboard then
+        if Input.KeyCode == Enum.KeyCode.Z then
+            HUB.Aim.Zoom = true
+            Camera.FieldOfView = 20
+        end
+    end
     if Input.UserInputType == Enum.UserInputType.MouseButton2 then
         AimbotKeybindDown = true
     end
 end)
 
 UserInputService.InputEnded:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.Keyboard then
+        if Input.KeyCode == Enum.KeyCode.Z then
+            HUB.Aim.Zoom = false
+            Camera.FieldOfView = HUB.Player.CustomFOV
+        end
+    end
     if Input.UserInputType == Enum.UserInputType.MouseButton2 then
         AimbotKeybindDown = false
     end
@@ -585,12 +603,14 @@ RunService.RenderStepped:Connect(function()
     if HUB.Aim.Aimbot and AimbotKeybindDown then
         local TargetedPlayer = GetClosestPlayerToCursor()
         if TargetedPlayer then
-            --TweenService:Create(Camera, TweenInfo.new(0.1 - HUB.Aim.Sensitivity/1000), {CFrame = CFrame.new(Camera.CFrame.p, TargetedPlayer.Character.PrimaryPart.Position)}):Play()
             local PlayerPosition = Camera:WorldToScreenPoint(TargetedPlayer.Character:FindFirstChild("Head").Position)
-            local MouseLocation = Camera:WorldToScreenPoint(Mouse.hit.p)
-            local MouseXLocation = (PlayerPosition.X - MouseLocation.X) / HUB.Aim.Sensitivity--((11-HUB.Aim.Sensitivity))
-            local MouseYLocation = (PlayerPosition.Y - MouseLocation.Y) / HUB.Aim.Sensitivity--((11-HUB.Aim.Sensitivity))
-            mousemoverel(MouseXLocation, MouseYLocation)
+            if HUB.Aim.AimbotMethod == "SYNX" then
+                local MouseLocation = Camera:WorldToScreenPoint(Mouse.hit.p)
+                local MouseXLocation = (PlayerPosition.X - MouseLocation.X) / HUB.Aim.Sensitivity--((11-HUB.Aim.Sensitivity))
+                local MouseYLocation = (PlayerPosition.Y - MouseLocation.Y) / HUB.Aim.Sensitivity--((11-HUB.Aim.Sensitivity))
+                mousemoverel(MouseXLocation, MouseYLocation)
+            end
+            --TweenService:Create(Camera, TweenInfo.new(0.1 - HUB.Aim.Sensitivity/1000), {CFrame = CFrame.new(Camera.CFrame.p, TargetedPlayer.Character.PrimaryPart.Position)}):Play()
         end
     end
 end)
@@ -1385,9 +1405,23 @@ AimPage.Slider({
     end,
     Min = 1,
     Max = 10,
-    Def  = 8,
+    Def  = 3,
     Enabled = false,
 })
+AimPage.Toggle({
+    Text = "Zoom (Z)",
+    Callback = function(value)
+        HUB.Aim.Zoom = value
+    end,
+    Enabled = false,
+})
+--[[AimPage.Dropdown({
+    Text = "Aimbot Mode/Method",
+    Callback = function(value)
+        HUB.Aim.AimbotMethod = value
+    end,
+    Options = {"SYNX", "Snap | Camera Manipulation"},
+})]]
 --[[AimPage.Toggle({
     Text = "Silent Aim",
     Callback = function(value)
