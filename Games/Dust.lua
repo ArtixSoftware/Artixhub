@@ -595,9 +595,7 @@ UserInputService.InputEnded:Connect(function(Input)
     if Input.UserInputType == Enum.UserInputType.Keyboard then
         if Input.KeyCode == Enum.KeyCode.Z then
             HUB.Aim.Zoom = false
-            if HUB.Player.CustomFOVOption then
-                Camera.FieldOfView = HUB.Player.CustomFOV
-            end
+            Camera.FieldOfView = HUB.Player.CustomFOV
         end
     end
     if Input.UserInputType == Enum.UserInputType.MouseButton2 then
