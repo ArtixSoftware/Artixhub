@@ -49,6 +49,7 @@ local HUB = {
         AutoSpiderman = false,
         RemoveJumpDelay = false,
         CustomFOV = Camera.FieldOfView,
+        CustomFOVOption = false,
     },
     Weapon = {
         NoRecoil = false,
@@ -67,6 +68,7 @@ local HUB = {
         FOVSize = 70,
         AimbotMethod = "SYNX",
         Zoom = false,
+        ZoomLevel = 20,
     },
     Game = {
         Autofarm = false,
@@ -136,9 +138,11 @@ end)
 
 Camera:GetPropertyChangedSignal("FieldOfView"):Connect(function()
     if HUB.Aim.Zoom then
-        Camera.FieldOfView = 20
+        Camera.FieldOfView = HUB.Aim.ZoomLevel
     else
-        Camera.FieldOfView = HUB.Player.CustomFOV
+        if HUB.Player.CustomFOVOption then
+            Camera.FieldOfView = HUB.Player.CustomFOV
+        end
     end
 end)
 
@@ -591,7 +595,9 @@ UserInputService.InputEnded:Connect(function(Input)
     if Input.UserInputType == Enum.UserInputType.Keyboard then
         if Input.KeyCode == Enum.KeyCode.Z then
             HUB.Aim.Zoom = false
-            Camera.FieldOfView = HUB.Player.CustomFOV
+            if HUB.Player.CustomFOVOption then
+                Camera.FieldOfView = HUB.Player.CustomFOV
+            end
         end
     end
     if Input.UserInputType == Enum.UserInputType.MouseButton2 then
@@ -1415,6 +1421,15 @@ AimPage.Toggle({
     end,
     Enabled = false,
 })
+AimPage.Slider({
+    Text = "Zoom Level",
+    Callback = function(value)
+        HUB.Aim.ZoomLevel = value
+    end,
+    Min = 1,
+    Max = 40,
+    Def = 20,
+})
 --[[AimPage.Dropdown({
     Text = "Aimbot Mode/Method",
     Callback = function(value)
@@ -1516,8 +1531,17 @@ PlayerPage.Slider({
     Def = HUB.Player.CustomFOV,
     Callback = function(value)
         HUB.Player.CustomFOV = value
-        Camera.FieldOfView = HUB.Player.CustomFOV
+        if HUB.Player.CustomFOVOption then
+            Camera.FieldOfView = HUB.Player.CustomFOV
+        end
     end,
+})
+PlayerPage.Toggle({
+    Text = "Custom FOV",
+    Callback = function(value)
+        HUB.Player.CustomFOVOption = value
+    end,
+    Enabled = false,
 })
 
 local ColorsPage = UI.New({Title = "Colors"})
